@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentTip — Tip any Agent ID by name</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+<script src="config.js"></script>
+</head>
+<body>
+<header>
+  <h1>AgentTip</h1>
+  <p class="tagline">Tip any Agent ID holder by name — in BNB, straight to their wallet.</p>
+</header>
+
+<main>
+  <section class="card" id="connect-card">
+    <h2>1. Connect your wallet</h2>
+    <p>Works with any wallet on BNB Smart Chain (chain 56). Only Agent ID holders can send or receive tips.</p>
+    <button id="connect-btn">Connect wallet</button>
+    <p id="wallet-status" class="status">Not connected.</p>
+    <p id="my-stats" class="status"></p>
+  </section>
+
+  <section class="card" id="tip-card">
+    <h2>2. Send a tip</h2>
+    <label for="recipient-input">Recipient — Agent ID name or address</label>
+    <input id="recipient-input" type="text" placeholder="e.g. nycto.ai or 0x0d8C…" autocomplete="off">
+    <button id="resolve-btn">Check recipient</button>
+    <p id="resolve-status" class="status"></p>
+
+    <label for="amount-input">Amount (BNB) — minimum 0.0001</label>
+    <input id="amount-input" type="number" min="0.0001" step="0.0001" value="0.001" inputmode="decimal">
+
+    <label for="message-input">Message (optional, max 140 characters)</label>
+    <input id="message-input" type="text" maxlength="140" placeholder="Say thanks…">
+
+    <button id="send-btn" disabled>Send tip</button>
+    <p id="send-status" class="status"></p>
+    <p class="fine">Tips are irreversible and go straight to the recipient — the contract holds no funds and charges no fee. You confirm the transaction yourself in your own wallet; nothing is ever signed automatically.</p>
+  </section>
+
+  <section class="card">
+    <h2>Recent tips</h2>
+    <p id="feed-status" class="status">Loading…</p>
+    <ul id="feed"></ul>
+  </section>
+
+  <section class="card">
+    <h2>Leaderboard</h2>
+    <p id="board-status" class="status">Loading…</p>
+    <div class="boards">
+      <div>
+        <h3>Top recipients</h3>
+        <ol id="top-recipients"></ol>
+      </div>
+      <div>
+        <h3>Top tippers</h3>
+        <ol id="top-tippers"></ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>How it works</h2>
+    <ul>
+      <li>Both the tipper and the recipient must hold an Agent ID (checked on-chain, <code>balanceOf</code> on the Agent ID contract).</li>
+      <li>Minimum tip 0.0001 BNB. Message up to 140 characters.</li>
+      <li>The contract forwards the full amount immediately — no custody, no fees, no owner, no admin functions.</li>
+      <li>Name lookup uses a local index (<code>names.json</code>) of Agent ID names verified with the Binance Agentic Wallet resolver plus on-chain checks. A name not in the index yet can still receive tips: paste the recipient's 0x address instead and the site verifies their Agent ID on-chain before you send.</li>
+      <li>Contract: <span id="contract-link">not deployed yet</span></li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <p>AgentTip — an entry for the Agent ID Hackathon (BNB Chain). No returns are promised; a tip is a gift, not an investment.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
